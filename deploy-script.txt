@@ -1,0 +1,5 @@
+Deploy with importing the database 
+az deployment group create --resource-group OpenCohort1_KhalidAshraf_Workshop --template-file template.json --parameters parameters.json --parameters administratorLoginPassword=<db_password> --parameters storageAccountKey=<storage_access_key> --parameters importDatabase=true -c
+
+Deploy without importing database
+az deployment group create --resource-group OpenCohort1_KhalidAshraf_Workshop --template-file template.json --parameters parameters.json --parameters administratorLoginPassword=<password> -c
