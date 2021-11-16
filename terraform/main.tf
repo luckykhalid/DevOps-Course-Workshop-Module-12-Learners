@@ -43,7 +43,29 @@ resource "azurerm_app_service" "main" {
   app_settings = {
     "SCM_DO_BUILD_DURING_DEPLOYMENT" : "True"
     "DEPLOYMENT_METHOD" : "Terraform"
-    "CONNECTION_STRING" : "Server=tcp:khalidashraf-non-iac-sqlserver.database.windows.net,1433;Initial Catalog=khalidashraf-non-iac-db;Persist Security Info=False;User ID=db;Password=${var.database_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+    "CONNECTION_STRING" : "Server=${azurerm_sql_server.main.fully_qualified_domain_name};Initial Catalog=khalidashraf-non-iac-db;Persist Security Info=False;User ID=db;Password=${var.database_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+  }
+
+}
+
+resource "azurerm_sql_server" "main" {
+  name                         = "khalidashraf-non-iac-sqlserver"
+  resource_group_name          = data.azurerm_resource_group.main.name
+  location                     = data.azurerm_resource_group.main.location
+  version                      = "12.0"
+  administrator_login          = "db"
+  administrator_login_password = var.database_password
+}
+
+resource "azurerm_sql_database" "main" {
+  name                = "khalidashraf-non-iac-db"
+  resource_group_name = data.azurerm_resource_group.main.name
+  location            = data.azurerm_resource_group.main.location
+  server_name         = azurerm_sql_server.main.name
+  edition             = "Basic"
+
+  lifecycle {
+    prevent_destroy = true
   }
 
 }
