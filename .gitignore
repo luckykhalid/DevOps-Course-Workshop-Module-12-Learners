@@ -5,3 +5,4 @@ out/
 .azure/
 .terraform/
 *.tfstate
+terraform/terraform.tfvars

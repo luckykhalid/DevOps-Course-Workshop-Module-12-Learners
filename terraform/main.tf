@@ -1,8 +1,3 @@
-variable "database_password" {
-  description = "Database password"
-  sensitive   = true
-}
-
 terraform {
   required_providers {
     azurerm = {
